@@ -1,6 +1,21 @@
 {
+    "baldinof/roadrunner-bundle": {
+        "version": "1.2",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "1.2",
+            "ref": "47c159c44eb9e6902828da4acbb4199757dd378f"
+        },
+        "files": [
+            "config/packages/baldinof_road_runner.yaml"
+        ]
+    },
     "composer/package-versions-deprecated": {
         "version": "1.11.99.1"
+    },
+    "dflydev/fig-cookies": {
+        "version": "v2.0.3"
     },
     "doctrine/annotations": {
         "version": "1.0",
@@ -84,8 +99,14 @@
     "friendsofphp/proxy-manager-lts": {
         "version": "v1.0.2"
     },
+    "google/protobuf": {
+        "version": "v3.14.0"
+    },
     "laminas/laminas-code": {
         "version": "4.0.0"
+    },
+    "laminas/laminas-diactoros": {
+        "version": "2.5.0"
     },
     "laminas/laminas-eventmanager": {
         "version": "3.3.0"
@@ -98,6 +119,9 @@
     },
     "nikic/php-parser": {
         "version": "v4.10.4"
+    },
+    "php-http/discovery": {
+        "version": "1.13.0"
     },
     "phpdocumentor/reflection-common": {
         "version": "2.2.0"
@@ -113,6 +137,18 @@
     },
     "psr/container": {
         "version": "1.0.0"
+    },
+    "psr/http-factory": {
+        "version": "1.0.1"
+    },
+    "psr/http-message": {
+        "version": "1.0.1"
+    },
+    "psr/http-server-handler": {
+        "version": "1.0.1"
+    },
+    "psr/http-server-middleware": {
+        "version": "1.0.1"
     },
     "psr/link": {
         "version": "1.0.0"
@@ -131,6 +167,15 @@
         "files": [
             "config/packages/sensio_framework_extra.yaml"
         ]
+    },
+    "spiral/goridge": {
+        "version": "v2.4.5"
+    },
+    "spiral/php-grpc": {
+        "version": "v1.4.2"
+    },
+    "spiral/roadrunner": {
+        "version": "v1.9.1"
     },
     "symfony/asset": {
         "version": "v4.4.18"
@@ -367,6 +412,9 @@
     "symfony/proxy-manager-bridge": {
         "version": "v4.4.18"
     },
+    "symfony/psr-http-message-bridge": {
+        "version": "v2.0.2"
+    },
     "symfony/routing": {
         "version": "4.2",
         "recipe": {
@@ -490,6 +538,28 @@
             "config/packages/dev/web_profiler.yaml",
             "config/packages/test/web_profiler.yaml",
             "config/routes/dev/web_profiler.yaml"
+        ]
+    },
+    "symfony/webpack-encore-bundle": {
+        "version": "1.6",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "1.6",
+            "ref": "f362ed8e8aa99a8cb216e6bdb2ac833dfb7643dd"
+        },
+        "files": [
+            "assets/app.js",
+            "assets/bootstrap.js",
+            "assets/controllers.json",
+            "assets/controllers/hello_controller.js",
+            "assets/styles/app.css",
+            "config/packages/assets.yaml",
+            "config/packages/prod/webpack_encore.yaml",
+            "config/packages/test/webpack_encore.yaml",
+            "config/packages/webpack_encore.yaml",
+            "package.json",
+            "webpack.config.js"
         ]
     },
     "symfony/yaml": {

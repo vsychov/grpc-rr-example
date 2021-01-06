@@ -1,0 +1,41 @@
+version: '3.8'
+services:
+  app:
+    command: [ 'sh', '-c', 'envsubst < .rr.template.yaml > .rr.yaml && rr serve -v -d -o "http.workers.pool.numWorkers=1" -l json -o "http.workers.pool.maxJobs=1"' ]
+    volumes:
+      - ./:/var/www
+    build:
+      dockerfile: Dockerfile
+      target: dev
+      context: .
+    image: app-full
+    ports:
+      - 8080:8080
+
+  app-grpc:
+    command: [ 'sh', '-c', 'envsubst < .rr.template.yaml > .rr.yaml && rr-grpc serve -v -d -o "grpc.workers.pool.numWorkers=1" -l json -o "grpc.workers.pool.maxJobs=1"' ]
+    volumes:
+      - ./:/var/www
+    image: app-full
+    depends_on:
+      - app
+    ports:
+      - 50051:50051
+
+  grpc-web-proxy:
+    build: docker/grpcwebproxy
+    depends_on:
+      - app-grpc
+    ports:
+      - 8090:8080
+    command: ['/app/grpcwebproxy', '--use_websockets=true', '--allow_all_origins', '--backend_addr=app-grpc:50051', '--run_http_server=true', '--run_tls_server=false']
+
+  grpcUi:
+    image: fullstorydev/grpcui:latest
+    volumes:
+      - ./proto:/proto
+    depends_on:
+      - app-grpc
+    entrypoint: [ '/bin/grpcui', "-bind=0.0.0.0", "-port=8080", '-plaintext', '-import-path=/proto', '-proto=service.proto', "app-grpc:50051" ]
+    ports:
+      - 8050:8080

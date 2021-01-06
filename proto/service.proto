@@ -1,0 +1,13 @@
+//protoc --php_out src proto/service.proto --php-grpc_out=src
+syntax = "proto3";
+package app;
+option php_namespace = "App\\Proto";
+option php_metadata_namespace = "App\\Proto";
+
+service Echo {
+    rpc Ping (Message) returns (Message) {}
+}
+
+message Message {
+    string msg = 1;
+}

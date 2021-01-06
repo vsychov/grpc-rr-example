@@ -1,0 +1,101 @@
+rpc:
+  # enable rpc server
+  enable: ${APP_METRICS_COLLECT_ENABLED}
+  listen: unix://var/roadrunner_rpc.sock
+
+metrics:
+  # prometheus client address (path /metrics added automatically)
+  address: ${PROMETHEUS_CLIENT_ADDRESS}
+
+  # list of metrics to collect from application
+  collect:
+    app_script_requests:
+      type: counter
+      help: "Show how often users request script.js"
+
+    app_telemetry_counter:
+      type: counter
+      help: "Show how often users send telemetry"
+
+# health service configuration
+health:
+  address: "0.0.0.0:2114"
+
+http:
+  address: "0.0.0.0:8080"
+
+  # cidr blocks which can set ip using X-Real-Ip or X-Forwarded-For
+  trustedSubnets: [${TRUSTED_PROXIES_RR}]
+
+  workers:
+    command: "php bin/console baldinof:roadrunner:worker"
+    relay: "unix://var/roadrunner.sock"
+#
+#    pool:
+#      numWorkers: 8
+#      allocateTimeout: 60
+
+# Additional HTTP headers and CORS control.
+headers:
+#  # Automatically add headers to every request passed to PHP.
+  request:
+#    "Host": "${HTTP_HOST}:${HTTP_PORT}"
+    "X-Forwarded-Proto": ${HTTP_SCHEME}
+
+# monitors rr server(s)
+limit:
+  interval: 1
+  services:
+    http:
+      maxMemory: 100
+
+static:
+  dir:   "./public"
+  forbid: [".php"]
+
+grpc:
+  listen: tcp://0.0.0.0:50051
+  workers:
+    command: "php bin/console baldinof:roadrunner:grpc-worker"
+    relay: "unix://var/roadrunner_grpc.sock"
+
+  # read how to write proto files in the next section
+  proto: "/var/www/proto/service.proto"
+
+  # tls configuration is optional
+#  tls.key:  "app.key"
+#  tls.cert: "app.crt"
+
+  # max send limit (MB)
+  MaxSendMsgSize: 50
+  # max receive limit (MB)
+  MaxRecvMsgSize: 50
+  # MaxConnectionIdle is a duration for the amount of time after which an
+  # idle connection would be closed by sending a GoAway. Idleness duration is
+  # defined since the most recent time the number of outstanding RPCs became
+  # zero or the connection establishment.
+  # default (if set to zero) is infinity.
+  MaxConnectionIdle: 0s
+  # MaxConnectionAge is a duration for the maximum amount of time a
+  # connection may exist before it will be closed by sending a GoAway. A
+  # random jitter of +/-10% will be added to MaxConnectionAge to spread out
+  # connection storms.
+  # default (if set to zero) is infinity.
+  MaxConnectionAge: 0s
+  # MaxConnectionAgeGrace is an additive period after MaxConnectionAge after
+  # which the connection will be forcibly closed.
+  # default (if set to zero) is infinity.
+  MaxConnectionAgeGrace: 0s
+  # MaxConnectionAgeGrace is an additive period after MaxConnectionAge after
+  # which the connection will be forcibly closed.
+  # default (if set to zero) is 10
+  MaxConcurrentStreams: 10
+  # After a duration of this time if the server doesn't see any activity it
+  # pings the client to see if the transport is still alive.
+  # If set below 1s, a minimum value of 1s will be used instead.
+  PingTime: 1s
+  # After having pinged for keepalive check, the server waits for a duration
+  # of Timeout and if no activity is seen even after that the connection is
+  # closed.
+  # default is 20s
+  Timeout: 200s

@@ -1,3 +1,7 @@
+.idea
+.env
+.rr.yaml
+.envrc
 
 ###> symfony/framework-bundle ###
 /.env.local
@@ -14,3 +18,21 @@
 .phpunit.result.cache
 /phpunit.xml
 ###< symfony/phpunit-bridge ###
+
+###> baldinof/roadrunner-bundle ###
+/bin/rr
+###< baldinof/roadrunner-bundle ###
+
+###> symfony/webpack-encore-bundle ###
+/node_modules/
+/public/dist/
+/public/build/
+npm-debug.log
+yarn-error.log
+###< symfony/webpack-encore-bundle ###
+
+###> helm ###
+.helm/Chart.lock
+###< helm ###
+
+.php_cs.cache
